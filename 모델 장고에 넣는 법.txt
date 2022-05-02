@@ -1,0 +1,54 @@
+
+(1) Jupyter Notebook에서 ARIMA 모델 저장
+
+-----------------------------------------------------------------------------
+from statsmodels.tsa.arima_model import ARIMA
+import statsmodels.api as sm
+
+model = ARIMA(train_df.price.values, order=(2,1,2))
+model_fit = model.fit(trend='c', full_output=True, disp=True)
+
+
+# 모델 저장
+import pickle
+pickle.dump(model_fit, open('model.pkl', 'wb'))  # save() 해당
+
+# 저장 시 장고 프로젝트로 경로 지정할 경우
+# pickle.dump(model_fit, open(r'C:\Users\bomoo\projectEx\my_app\new_model.pkl', 'wb'))
+===========================================================
+
+장고 
+(2) modelresult.py 파일에서 모델 로드 및 예측
+
+-----------------------------------------------------------------------------
+
+import pickle
+
+def model_load():
+	# 모델 로드
+	loaded_model = pickle.load(open('my_app/new_model.pkl', 'rb'))
+	forecast_data = loaded_model.forecast(steps=5) # 5일치 예측
+	pred_y = forecast_data[0].tolist()
+	return pred_y
+
+
+===========================================================
+(3) views.py에서 모델 로드 함수 호출하고 결과 받아서 index.html로 전송
+-----------------------------------------------------------------------------
+from .modelresult import model_load
+
+def index(request):
+	pred_y = model_load()
+	return render(request, 'my_app/index.html', {'pred_y':pred_y})
+
+===========================================================
+(4) index.html에서 예측값 pred_y 받아서 출력
+-----------------------------------------------------------------------------
+
+<body>
+	index 페이지 입니다!!! <br><br>
+
+	비트 코인 가격 예측 5일 <br>
+	{% for i in pred_y %}
+			{{i}} <br> 
+	{% endfor %}
