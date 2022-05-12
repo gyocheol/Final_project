@@ -1,0 +1,34 @@
+# 하단바 css : style안에 넣어주기
+		.icon-bar {
+			position: fixed;
+			bottom: 0px;
+			left: 0px;
+			width: 100%; /* Full-width */
+			background-color: #555; /* Dark-grey background */
+			overflow: auto; /* Overflow due to float */
+			/* position: sticky; */
+		}
+		.icon-bar a {
+			float: left; /* Float links side by side */
+			text-align: center; /* Center-align text */
+			width: 25%; /* Equal width (5 icons with 20% width each = 100%) */
+			padding: 12px 0; /* Some top and bottom padding */
+			transition: all 0.3s ease; /* Add transition for hover effects */
+			color: white; /* White text color */
+			font-size: 36px; /* Increased font size */
+		}
+		.icon-bar a:hover {
+			background-color: #000; /* Add a hover color */
+		}
+		.active {
+			background-color: #04AA6D; /* Add an active/current color */
+		}
+
+
+# 하단 바 : 젤 아래 </body>, </html> 사이에 넣기
+<div class="icon-bar">
+	<a class="active" href="{% url 'main' %}"><i class="fa fa-home"></i></a>
+	<a href="{% url 'plantimage:plantimage' %}"><i class="fa fa-pagelines"></i></a>
+	<a href="{% url 'diseaseimage:diseaseimage' %}"><i class="fa fa-medkit" aria-hidden="true"></i></a>
+	<a href="{% url 'search' %}"><i class="fa fa-search"></i></a>
+</div>
